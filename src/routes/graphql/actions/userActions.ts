@@ -29,8 +29,12 @@ const createUser = async (user: UserDTO, { prisma }: FastifyInstance) => {
   return await prisma.user.create({ data: user });
 };
 
-const updateUser = async (id: string, user: Partial<UserDTO>, ctx: FastifyInstance) => {
-  return await ctx.prisma.user.update({
+const updateUser = async (
+  id: string,
+  user: Partial<UserDTO>,
+  { prisma }: FastifyInstance,
+) => {
+  return await prisma.user.update({
     where: {
       id,
     },
@@ -38,12 +42,50 @@ const updateUser = async (id: string, user: Partial<UserDTO>, ctx: FastifyInstan
   });
 };
 
-const deleteUser = async (id: string, ctx: FastifyInstance) => {
-  return await ctx.prisma.user.delete({
-    where: {
-      id,
+const deleteUser = async (id: string, { prisma }: FastifyInstance) => {
+  try {
+    await prisma.user.delete({
+      where: {
+        id,
+      },
+    });
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+const subscribeTo = async (
+  userId: string,
+  authorId: string,
+  { prisma }: FastifyInstance,
+) => {
+  await prisma.subscribersOnAuthors.create({
+    data: {
+      subscriberId: userId,
+      authorId,
     },
   });
+
+  return await prisma.user.findUnique({ where: { id: userId } });
+};
+
+const unsubscribeFrom = async (
+  userId: string,
+  authorId: string,
+  { prisma }: FastifyInstance,
+) => {
+  try {
+    await prisma.subscribersOnAuthors.deleteMany({
+      where: {
+        subscriberId: userId,
+        authorId,
+      },
+    });
+    return true;
+  } catch {
+    return false;
+  }
 };
 
 export {
@@ -54,4 +96,6 @@ export {
   getUserById,
   getUsers,
   updateUser,
+  subscribeTo,
+  unsubscribeFrom,
 };
