@@ -1,11 +1,11 @@
 import { FastifyInstance } from 'fastify';
 
 const getMemberTypes = async ({ prisma }: FastifyInstance) => {
-  return await prisma.post.findMany();
+  return await prisma.memberType.findMany();
 };
 
 const getMemberTypeById = async (id: string, { prisma }: FastifyInstance) => {
-  return await prisma.post.findFirst({ where: { id } });
+  return await prisma.memberType.findFirst({ where: { id } });
 };
 
 export { getMemberTypes, getMemberTypeById };
