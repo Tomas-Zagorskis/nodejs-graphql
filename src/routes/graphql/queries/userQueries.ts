@@ -1,5 +1,5 @@
 import { FastifyInstance } from 'fastify';
-import { GraphQLList } from 'graphql';
+import { GraphQLList, GraphQLNonNull } from 'graphql';
 
 import { UserType } from '../types/user.js';
 import { UUIDType } from '../types/uuid.js';
@@ -10,7 +10,7 @@ export const userQueries = {
     type: UserType,
     args: {
       id: {
-        type: UUIDType,
+        type: new GraphQLNonNull(UUIDType),
       },
     },
     resolve: (_source, { id }, context: FastifyInstance) => getUserById(id, context),

@@ -1,5 +1,5 @@
 import { FastifyInstance } from 'fastify';
-import { GraphQLList } from 'graphql';
+import { GraphQLList, GraphQLNonNull } from 'graphql';
 
 import { MemberType } from '../types/memberType.js';
 import { MemberTypeId } from '../types/memberTypeId.js';
@@ -10,7 +10,7 @@ export const memberTypeQueries = {
     type: MemberType,
     args: {
       id: {
-        type: MemberTypeId,
+        type: new GraphQLNonNull(MemberTypeId),
       },
     },
     resolve: (_source: unknown, { id }, context: FastifyInstance) =>

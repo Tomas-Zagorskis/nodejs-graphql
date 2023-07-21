@@ -1,5 +1,5 @@
 import { FastifyInstance } from 'fastify';
-import { GraphQLList } from 'graphql';
+import { GraphQLList, GraphQLNonNull } from 'graphql';
 
 import { UUIDType } from '../types/uuid.js';
 import { PostType } from '../types/post.js';
@@ -10,7 +10,7 @@ export const postQueries = {
     type: PostType,
     args: {
       id: {
-        type: UUIDType,
+        type: new GraphQLNonNull(UUIDType),
       },
     },
     resolve: (_source: unknown, { id }, context: FastifyInstance) =>

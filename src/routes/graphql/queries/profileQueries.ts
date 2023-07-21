@@ -1,5 +1,5 @@
 import { FastifyInstance } from 'fastify';
-import { GraphQLList } from 'graphql';
+import { GraphQLList, GraphQLNonNull } from 'graphql';
 
 import { ProfileType } from '../types/profile.js';
 import { getProfileById, getProfiles } from '../actions/profileActions.js';
@@ -10,7 +10,7 @@ export const profileQueries = {
     type: ProfileType,
     args: {
       id: {
-        type: UUIDType,
+        type: new GraphQLNonNull(UUIDType),
       },
     },
     resolve: (_source: unknown, { id }, context: FastifyInstance) =>
