@@ -1,5 +1,7 @@
 import { FastifyInstance } from 'fastify';
 
+import { PostDTO } from '../types/post.js';
+
 const getPosts = async ({ prisma }: FastifyInstance) => {
   return await prisma.post.findMany();
 };
@@ -12,4 +14,29 @@ const getPostById = async (id: string, { prisma }: FastifyInstance) => {
   return await prisma.post.findFirst({ where: { id } });
 };
 
-export { getPosts, getPostsByAuthorId, getPostById };
+const createPost = async (post: PostDTO, { prisma }: FastifyInstance) => {
+  return await prisma.post.create({ data: post });
+};
+
+const updatePost = async (
+  id: string,
+  post: Partial<PostDTO>,
+  { prisma }: FastifyInstance,
+) => {
+  return await prisma.post.update({
+    where: {
+      id,
+    },
+    data: post,
+  });
+};
+
+const deletePost = async (id: string, { prisma }: FastifyInstance) => {
+  return await prisma.post.delete({
+    where: {
+      id,
+    },
+  });
+};
+
+export { getPosts, getPostsByAuthorId, getPostById, createPost, updatePost, deletePost };
