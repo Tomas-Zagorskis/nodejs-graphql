@@ -52,7 +52,7 @@ export const ProfileType = new GraphQLObjectType({
 });
 
 export const ProfileCreateType = new GraphQLInputObjectType({
-  name: 'ProfileCreate',
+  name: 'CreateProfileInput',
   fields: () => ({
     ...profileDTO,
     userId: {
@@ -65,7 +65,7 @@ export const ProfileCreateType = new GraphQLInputObjectType({
 });
 
 export const ProfileChangeType = new GraphQLInputObjectType({
-  name: 'ProfileChange',
+  name: 'ChangeProfileInput',
   fields: () => ({
     ...profileDTO,
   }),

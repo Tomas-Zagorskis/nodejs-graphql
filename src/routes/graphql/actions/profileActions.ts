@@ -35,7 +35,12 @@ const updateProfile = async (
 };
 
 const deleteProfile = async (id: string, { prisma }: FastifyInstance) => {
-  return await prisma.profile.delete({ where: { id } });
+  try {
+    await prisma.profile.delete({ where: { id } });
+    return true;
+  } catch {
+    return false;
+  }
 };
 
 export {

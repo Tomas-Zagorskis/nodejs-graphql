@@ -32,11 +32,16 @@ const updatePost = async (
 };
 
 const deletePost = async (id: string, { prisma }: FastifyInstance) => {
-  return await prisma.post.delete({
-    where: {
-      id,
-    },
-  });
+  try {
+    await prisma.post.delete({
+      where: {
+        id,
+      },
+    });
+    return true;
+  } catch {
+    return false;
+  }
 };
 
 export { getPosts, getPostsByAuthorId, getPostById, createPost, updatePost, deletePost };

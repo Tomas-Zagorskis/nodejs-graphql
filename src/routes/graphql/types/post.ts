@@ -39,7 +39,7 @@ export const PostType = new GraphQLObjectType({
 });
 
 export const PostCreateType = new GraphQLInputObjectType({
-  name: 'PostCreate',
+  name: 'CreatePostInput',
   fields: () => ({
     ...postDTO,
     authorId: {
@@ -49,7 +49,7 @@ export const PostCreateType = new GraphQLInputObjectType({
 });
 
 export const PostChangeType = new GraphQLInputObjectType({
-  name: 'PostChange',
+  name: 'ChangePostInput',
   fields: () => ({
     ...postDTO,
   }),

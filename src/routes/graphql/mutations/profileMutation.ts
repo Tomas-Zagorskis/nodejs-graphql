@@ -1,5 +1,5 @@
 import { FastifyInstance } from 'fastify';
-import { GraphQLNonNull } from 'graphql';
+import { GraphQLBoolean, GraphQLNonNull } from 'graphql';
 
 import {
   createProfile,
@@ -13,32 +13,32 @@ export const profileMutations = {
   createProfile: {
     type: ProfileType,
     args: {
-      profileDTO: {
+      dto: {
         type: ProfileCreateType,
       },
     },
-    resolve: (_source: unknown, { profileDTO }, ctx: FastifyInstance) => {
-      return createProfile(profileDTO, ctx);
+    resolve: (_source: unknown, { dto }, ctx: FastifyInstance) => {
+      return createProfile(dto, ctx);
     },
   },
 
-  updateProfile: {
+  changeProfile: {
     type: ProfileType,
     args: {
-      profileDTO: {
+      dto: {
         type: ProfileChangeType,
       },
       id: {
         type: new GraphQLNonNull(UUIDType),
       },
     },
-    resolve: (_source: unknown, { id, profileDTO }, ctx: FastifyInstance) => {
-      return updateProfile(id, profileDTO, ctx);
+    resolve: (_source: unknown, { id, dto }, ctx: FastifyInstance) => {
+      return updateProfile(id, dto, ctx);
     },
   },
 
   deleteProfile: {
-    type: ProfileType,
+    type: GraphQLBoolean,
     args: {
       id: {
         type: new GraphQLNonNull(UUIDType),
