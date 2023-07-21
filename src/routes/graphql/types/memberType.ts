@@ -1,5 +1,9 @@
-import { GraphQLFloat, GraphQLInt, GraphQLObjectType } from 'graphql';
+import { FastifyInstance } from 'fastify';
+import { GraphQLFloat, GraphQLInt, GraphQLList, GraphQLObjectType } from 'graphql';
+
+import { getProfilesByMemberTypeId } from '../actions/profileActions.js';
 import { MemberTypeId } from './memberTypeId.js';
+import { ProfileType } from './profile.js';
 
 export const MemberType = new GraphQLObjectType({
   name: 'MemberType',
@@ -12,6 +16,12 @@ export const MemberType = new GraphQLObjectType({
     },
     postsLimitPerMonth: {
       type: GraphQLInt,
+    },
+    profiles: {
+      type: new GraphQLList(ProfileType),
+      resolve: ({ id }, _args: unknown, context: FastifyInstance) => {
+        return getProfilesByMemberTypeId(id, context);
+      },
     },
   }),
 });
