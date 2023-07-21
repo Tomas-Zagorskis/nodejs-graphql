@@ -1,5 +1,11 @@
 import { FastifyInstance } from 'fastify';
-import { GraphQLBoolean, GraphQLInt, GraphQLObjectType } from 'graphql';
+import {
+  GraphQLBoolean,
+  GraphQLInputObjectType,
+  GraphQLInt,
+  GraphQLNonNull,
+  GraphQLObjectType,
+} from 'graphql';
 
 import { getMemberTypeById } from '../actions/memberTypeActions.js';
 import { getUserById } from '../actions/userActions.js';
@@ -8,18 +14,22 @@ import { MemberTypeId } from './memberTypeId.js';
 import { UserType } from './user.js';
 import { UUIDType } from './uuid.js';
 
+const profileDTO = {
+  isMale: {
+    type: GraphQLBoolean,
+  },
+  yearOfBirth: {
+    type: GraphQLInt,
+  },
+};
+
 export const ProfileType = new GraphQLObjectType({
   name: 'ProfileType',
   fields: () => ({
     id: {
       type: UUIDType,
     },
-    isMale: {
-      type: GraphQLBoolean,
-    },
-    yearOfBirth: {
-      type: GraphQLInt,
-    },
+    ...profileDTO,
     user: {
       type: UserType,
       resolve: ({ userId }, _args: unknown, context: FastifyInstance) => {
@@ -40,3 +50,27 @@ export const ProfileType = new GraphQLObjectType({
     },
   }),
 });
+
+export const ProfileCreateType = new GraphQLInputObjectType({
+  name: 'ProfileCreate',
+  fields: () => ({
+    ...profileDTO,
+    userId: {
+      type: new GraphQLNonNull(UUIDType),
+    },
+  }),
+});
+
+export const ProfileChangeType = new GraphQLInputObjectType({
+  name: 'ProfileChange',
+  fields: () => ({
+    ...profileDTO,
+  }),
+});
+
+export type ProfileDTO = {
+  isMale: boolean;
+  yearOfBirth: number;
+  userId: string;
+  memberTypeId: string;
+};
