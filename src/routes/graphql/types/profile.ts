@@ -58,6 +58,9 @@ export const ProfileCreateType = new GraphQLInputObjectType({
     userId: {
       type: new GraphQLNonNull(UUIDType),
     },
+    memberTypeId: {
+      type: new GraphQLNonNull(MemberTypeId),
+    },
   }),
 });
 

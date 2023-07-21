@@ -23,7 +23,7 @@ const createProfile = async (profile: ProfileDTO, { prisma }: FastifyInstance) =
 
 const updateProfile = async (
   id: string,
-  profile: ProfileDTO,
+  profile: Partial<ProfileDTO>,
   { prisma }: FastifyInstance,
 ) => {
   return await prisma.profile.update({
