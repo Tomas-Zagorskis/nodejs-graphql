@@ -4,7 +4,7 @@ const getPosts = async ({ prisma }: FastifyInstance) => {
   return await prisma.post.findMany();
 };
 
-const getPostsByAuthor = async (id: string, { prisma }: FastifyInstance) => {
+const getPostsByAuthorId = async (id: string, { prisma }: FastifyInstance) => {
   return await prisma.post.findMany({ where: { authorId: id } });
 };
 
@@ -12,4 +12,4 @@ const getPostById = async (id: string, { prisma }: FastifyInstance) => {
   return await prisma.post.findFirst({ where: { id } });
 };
 
-export { getPosts, getPostsByAuthor, getPostById };
+export { getPosts, getPostsByAuthorId, getPostById };

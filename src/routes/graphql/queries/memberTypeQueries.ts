@@ -1,9 +1,9 @@
 import { FastifyInstance } from 'fastify';
 import { GraphQLList, GraphQLNonNull } from 'graphql';
 
+import { getMemberTypeById, getMemberTypes } from '../actions/memberTypeActions.js';
 import { MemberType } from '../types/memberType.js';
 import { MemberTypeId } from '../types/memberTypeId.js';
-import { getMemberTypeById, getMemberTypes } from '../actions/memberTypeActions.js';
 
 export const memberTypeQueries = {
   memberType: {
@@ -13,12 +13,14 @@ export const memberTypeQueries = {
         type: new GraphQLNonNull(MemberTypeId),
       },
     },
-    resolve: (_source: unknown, { id }, context: FastifyInstance) =>
-      getMemberTypeById(id, context),
+    resolve: (_source: string, { id }, context: FastifyInstance) => {
+      return getMemberTypeById(id, context);
+    },
   },
   memberTypes: {
     type: new GraphQLList(MemberType),
-    resolve: (_source: unknown, _args: unknown, context: FastifyInstance) =>
-      getMemberTypes(context),
+    resolve: (_source: string, _args: unknown, context: FastifyInstance) => {
+      return getMemberTypes(context);
+    },
   },
 };

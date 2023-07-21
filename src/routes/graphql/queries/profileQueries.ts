@@ -1,8 +1,8 @@
 import { FastifyInstance } from 'fastify';
 import { GraphQLList, GraphQLNonNull } from 'graphql';
 
-import { ProfileType } from '../types/profile.js';
 import { getProfileById, getProfiles } from '../actions/profileActions.js';
+import { ProfileType } from '../types/profile.js';
 import { UUIDType } from '../types/uuid.js';
 
 export const profileQueries = {
@@ -13,12 +13,14 @@ export const profileQueries = {
         type: new GraphQLNonNull(UUIDType),
       },
     },
-    resolve: (_source: unknown, { id }, context: FastifyInstance) =>
-      getProfileById(id, context),
+    resolve: (_source: string, { id }, context: FastifyInstance) => {
+      return getProfileById(id, context);
+    },
   },
   profiles: {
     type: new GraphQLList(ProfileType),
-    resolve: (_source: unknown, _args: unknown, context: FastifyInstance) =>
-      getProfiles(context),
+    resolve: (_source: string, _args: unknown, context: FastifyInstance) => {
+      return getProfiles(context);
+    },
   },
 };

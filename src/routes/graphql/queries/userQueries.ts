@@ -1,9 +1,9 @@
 import { FastifyInstance } from 'fastify';
 import { GraphQLList, GraphQLNonNull } from 'graphql';
 
+import { getUserById, getUsers } from '../actions/userActions.js';
 import { UserType } from '../types/user.js';
 import { UUIDType } from '../types/uuid.js';
-import { getUserById, getUsers } from '../actions/userActions.js';
 
 export const userQueries = {
   user: {
@@ -13,10 +13,14 @@ export const userQueries = {
         type: new GraphQLNonNull(UUIDType),
       },
     },
-    resolve: (_source, { id }, context: FastifyInstance) => getUserById(id, context),
+    resolve: (_source: string, { id }, context: FastifyInstance) => {
+      return getUserById(id, context);
+    },
   },
   users: {
     type: new GraphQLList(UserType),
-    resolve: (_source, _args, context: FastifyInstance) => getUsers(context),
+    resolve: (_source: string, _args: unknown, context: FastifyInstance) => {
+      return getUsers(context);
+    },
   },
 };

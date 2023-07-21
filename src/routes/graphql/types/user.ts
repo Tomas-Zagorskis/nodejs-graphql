@@ -1,12 +1,12 @@
-import { GraphQLFloat, GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
 import { FastifyInstance } from 'fastify';
+import { GraphQLFloat, GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
 
-import { UUIDType } from './uuid.js';
-import { ProfileType } from './profile.js';
-import { getProfileById } from '../actions/profileActions.js';
-import { PostType } from './post.js';
-import { getPostsByAuthor } from '../actions/postActions.js';
+import { getPostsByAuthorId } from '../actions/postActions.js';
+import { getProfileByUserId } from '../actions/profileActions.js';
 import { getSubscribersOfUser, getSubscriptionsOfUser } from '../actions/userActions.js';
+import { PostType } from './post.js';
+import { ProfileType } from './profile.js';
+import { UUIDType } from './uuid.js';
 
 export const UserType = new GraphQLObjectType({
   name: 'User',
@@ -22,23 +22,27 @@ export const UserType = new GraphQLObjectType({
     },
     profile: {
       type: ProfileType,
-      resolve: (_source: string, { id }, context: FastifyInstance) =>
-        getProfileById(id, context),
+      resolve: ({ id }, _args: unknown, context: FastifyInstance) => {
+        return getProfileByUserId(id, context);
+      },
     },
     posts: {
       type: new GraphQLList(PostType),
-      resolve: (_source: string, { id }, context: FastifyInstance) =>
-        getPostsByAuthor(id, context),
+      resolve: ({ id }, _args: unknown, context: FastifyInstance) => {
+        return getPostsByAuthorId(id, context);
+      },
     },
     userSubscribedTo: {
       type: new GraphQLList(UserType),
-      resolve: (_source: string, { id }, context: FastifyInstance) =>
-        getSubscribersOfUser(id, context),
+      resolve: ({ id }, _args: unknown, context: FastifyInstance) => {
+        return getSubscribersOfUser(id, context);
+      },
     },
     subscribedToUser: {
       type: new GraphQLList(UserType),
-      resolve: (_source: string, { id }, context: FastifyInstance) =>
-        getSubscriptionsOfUser(id, context),
+      resolve: ({ id }, _args: unknown, context: FastifyInstance) => {
+        return getSubscriptionsOfUser(id, context);
+      },
     },
   }),
 });
