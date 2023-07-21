@@ -1,5 +1,12 @@
 import { FastifyInstance } from 'fastify';
-import { GraphQLFloat, GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
+import {
+  GraphQLFloat,
+  GraphQLInputObjectType,
+  GraphQLList,
+  GraphQLNonNull,
+  GraphQLObjectType,
+  GraphQLString,
+} from 'graphql';
 
 import { getPostsByAuthorId } from '../actions/postActions.js';
 import { getProfileByUserId } from '../actions/profileActions.js';
@@ -8,18 +15,22 @@ import { PostType } from './post.js';
 import { ProfileType } from './profile.js';
 import { UUIDType } from './uuid.js';
 
+const userDTO = {
+  name: {
+    type: GraphQLString,
+  },
+  balance: {
+    type: GraphQLFloat,
+  },
+};
+
 export const UserType = new GraphQLObjectType({
   name: 'User',
   fields: () => ({
     id: {
       type: UUIDType,
     },
-    name: {
-      type: GraphQLString,
-    },
-    balance: {
-      type: GraphQLFloat,
-    },
+    ...userDTO,
     profile: {
       type: ProfileType,
       resolve: ({ id }, _args: unknown, context: FastifyInstance) => {
@@ -46,3 +57,27 @@ export const UserType = new GraphQLObjectType({
     },
   }),
 });
+
+export const UserCreateType = new GraphQLInputObjectType({
+  name: 'UserCreate',
+  fields: () => ({
+    name: {
+      type: new GraphQLNonNull(GraphQLString),
+    },
+    balance: {
+      type: new GraphQLNonNull(GraphQLFloat),
+    },
+  }),
+});
+
+export const UserChangeType = new GraphQLInputObjectType({
+  name: 'UserChange',
+  fields: () => ({
+    ...userDTO,
+  }),
+});
+
+export type UserDTO = {
+  name: string;
+  balance: number;
+};
