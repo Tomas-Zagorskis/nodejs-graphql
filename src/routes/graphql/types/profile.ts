@@ -1,4 +1,3 @@
-import { FastifyInstance } from 'fastify';
 import {
   GraphQLBoolean,
   GraphQLInputObjectType,
@@ -13,6 +12,7 @@ import { MemberType } from './memberType.js';
 import { MemberTypeId } from './memberTypeId.js';
 import { UserType } from './user.js';
 import { UUIDType } from './uuid.js';
+import { Context } from '../types/context.js';
 
 const profileDTO = {
   isMale: {
@@ -32,7 +32,7 @@ export const ProfileType = new GraphQLObjectType({
     ...profileDTO,
     user: {
       type: UserType,
-      resolve: ({ userId }, _args: unknown, context: FastifyInstance) => {
+      resolve: ({ userId }, _args: unknown, context: Context) => {
         return getUserById(userId, context);
       },
     },
@@ -41,7 +41,7 @@ export const ProfileType = new GraphQLObjectType({
     },
     memberType: {
       type: MemberType,
-      resolve: ({ memberTypeId }, _args: unknown, context: FastifyInstance) => {
+      resolve: ({ memberTypeId }, _args: unknown, context: Context) => {
         return getMemberTypeById(memberTypeId, context);
       },
     },
@@ -71,9 +71,12 @@ export const ProfileChangeType = new GraphQLInputObjectType({
   }),
 });
 
-export type ProfileDTO = {
+export type Profile = {
+  id: string;
   isMale: boolean;
   yearOfBirth: number;
   userId: string;
   memberTypeId: string;
 };
+
+export type ProfileDTO = Omit<Profile, 'id'>;

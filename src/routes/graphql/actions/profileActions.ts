@@ -1,30 +1,30 @@
-import { FastifyInstance } from 'fastify';
+import { Context } from '../types/context.js';
 import { ProfileDTO } from '../types/profile.js';
 
-const getProfiles = async ({ prisma }: FastifyInstance) => {
+const getProfiles = async ({ prisma }: Context) => {
   return await prisma.profile.findMany({});
 };
 
-const getProfileById = async (id: string, { prisma }: FastifyInstance) => {
+const getProfileById = async (id: string, { prisma }: Context) => {
   return await prisma.profile.findFirst({ where: { id } });
 };
 
-const getProfileByUserId = async (id: string, { prisma }: FastifyInstance) => {
+const getProfileByUserId = async (id: string, { prisma }: Context) => {
   return await prisma.profile.findFirst({ where: { userId: id } });
 };
 
-const getProfilesByMemberTypeId = async (id: string, { prisma }: FastifyInstance) => {
-  return await prisma.profile.findMany({ where: { memberTypeId: id } });
+const getProfilesByMemberTypeId = async (id: string, { loader }: Context) => {
+  return await loader.profile.load(id);
 };
 
-const createProfile = async (profile: ProfileDTO, { prisma }: FastifyInstance) => {
+const createProfile = async (profile: ProfileDTO, { prisma }: Context) => {
   return await prisma.profile.create({ data: profile });
 };
 
 const updateProfile = async (
   id: string,
   profile: Partial<ProfileDTO>,
-  { prisma }: FastifyInstance,
+  { prisma }: Context,
 ) => {
   return await prisma.profile.update({
     where: {
@@ -34,7 +34,7 @@ const updateProfile = async (
   });
 };
 
-const deleteProfile = async (id: string, { prisma }: FastifyInstance) => {
+const deleteProfile = async (id: string, { prisma }: Context) => {
   try {
     await prisma.profile.delete({ where: { id } });
     return true;
@@ -44,11 +44,11 @@ const deleteProfile = async (id: string, { prisma }: FastifyInstance) => {
 };
 
 export {
-  getProfiles,
-  getProfileById,
-  getProfilesByMemberTypeId,
-  getProfileByUserId,
   createProfile,
-  updateProfile,
   deleteProfile,
+  getProfileById,
+  getProfileByUserId,
+  getProfiles,
+  getProfilesByMemberTypeId,
+  updateProfile,
 };

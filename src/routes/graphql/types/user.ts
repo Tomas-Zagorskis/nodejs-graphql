@@ -1,4 +1,3 @@
-import { FastifyInstance } from 'fastify';
 import {
   GraphQLFloat,
   GraphQLInputObjectType,
@@ -11,6 +10,7 @@ import {
 import { getPostsByAuthorId } from '../actions/postActions.js';
 import { getProfileByUserId } from '../actions/profileActions.js';
 import { getSubscribersOfUser, getSubscriptionsOfUser } from '../actions/userActions.js';
+import { Context } from '../types/context.js';
 import { PostType } from './post.js';
 import { ProfileType } from './profile.js';
 import { UUIDType } from './uuid.js';
@@ -33,25 +33,25 @@ export const UserType = new GraphQLObjectType({
     ...userDTO,
     profile: {
       type: ProfileType,
-      resolve: ({ id }, _args: unknown, context: FastifyInstance) => {
+      resolve: ({ id }, _args: unknown, context: Context) => {
         return getProfileByUserId(id, context);
       },
     },
     posts: {
       type: new GraphQLList(PostType),
-      resolve: ({ id }, _args: unknown, context: FastifyInstance) => {
+      resolve: ({ id }, _args: unknown, context: Context) => {
         return getPostsByAuthorId(id, context);
       },
     },
     userSubscribedTo: {
       type: new GraphQLList(UserType),
-      resolve: ({ id }, _args: unknown, context: FastifyInstance) => {
+      resolve: ({ id }, _args: unknown, context: Context) => {
         return getSubscribersOfUser(id, context);
       },
     },
     subscribedToUser: {
       type: new GraphQLList(UserType),
-      resolve: ({ id }, _args: unknown, context: FastifyInstance) => {
+      resolve: ({ id }, _args: unknown, context: Context) => {
         return getSubscriptionsOfUser(id, context);
       },
     },
@@ -77,7 +77,10 @@ export const UserChangeType = new GraphQLInputObjectType({
   }),
 });
 
-export type UserDTO = {
+export type User = {
+  id: string;
   name: string;
   balance: number;
 };
+
+export type UserDTO = Omit<User, 'id'>;

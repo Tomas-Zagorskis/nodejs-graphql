@@ -1,4 +1,3 @@
-import { FastifyInstance } from 'fastify';
 import {
   GraphQLInputObjectType,
   GraphQLNonNull,
@@ -7,6 +6,7 @@ import {
 } from 'graphql';
 
 import { getUserById } from '../actions/userActions.js';
+import { Context } from '../types/context.js';
 import { UserType } from './user.js';
 import { UUIDType } from './uuid.js';
 
@@ -28,7 +28,7 @@ export const PostType = new GraphQLObjectType({
     ...postDTO,
     author: {
       type: UserType,
-      resolve: ({ authorId }, _args: unknown, context: FastifyInstance) => {
+      resolve: ({ authorId }, _args: unknown, context: Context) => {
         return getUserById(authorId, context);
       },
     },
@@ -55,8 +55,11 @@ export const PostChangeType = new GraphQLInputObjectType({
   }),
 });
 
-export type PostDTO = {
+export type Post = {
+  id: string;
   title: string;
   content: string;
   authorId: string;
 };
+
+export type PostDTO = Omit<Post, 'id'>;

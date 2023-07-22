@@ -1,28 +1,23 @@
-import { FastifyInstance } from 'fastify';
-
+import { Context } from '../types/context.js';
 import { PostDTO } from '../types/post.js';
 
-const getPosts = async ({ prisma }: FastifyInstance) => {
+const getPosts = async ({ prisma }: Context) => {
   return await prisma.post.findMany();
 };
 
-const getPostsByAuthorId = async (id: string, { prisma }: FastifyInstance) => {
+const getPostsByAuthorId = async (id: string, { prisma }: Context) => {
   return await prisma.post.findMany({ where: { authorId: id } });
 };
 
-const getPostById = async (id: string, { prisma }: FastifyInstance) => {
+const getPostById = async (id: string, { prisma }: Context) => {
   return await prisma.post.findFirst({ where: { id } });
 };
 
-const createPost = async (post: PostDTO, { prisma }: FastifyInstance) => {
+const createPost = async (post: PostDTO, { prisma }: Context) => {
   return await prisma.post.create({ data: post });
 };
 
-const updatePost = async (
-  id: string,
-  post: Partial<PostDTO>,
-  { prisma }: FastifyInstance,
-) => {
+const updatePost = async (id: string, post: Partial<PostDTO>, { prisma }: Context) => {
   return await prisma.post.update({
     where: {
       id,
@@ -31,7 +26,7 @@ const updatePost = async (
   });
 };
 
-const deletePost = async (id: string, { prisma }: FastifyInstance) => {
+const deletePost = async (id: string, { prisma }: Context) => {
   try {
     await prisma.post.delete({
       where: {
@@ -44,4 +39,4 @@ const deletePost = async (id: string, { prisma }: FastifyInstance) => {
   }
 };
 
-export { getPosts, getPostsByAuthorId, getPostById, createPost, updatePost, deletePost };
+export { createPost, deletePost, getPostById, getPosts, getPostsByAuthorId, updatePost };
