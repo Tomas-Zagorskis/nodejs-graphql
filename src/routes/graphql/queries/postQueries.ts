@@ -1,7 +1,7 @@
-import { FastifyInstance } from 'fastify';
 import { GraphQLList, GraphQLNonNull } from 'graphql';
 
 import { getPostById, getPosts } from '../actions/postActions.js';
+import { Context } from '../types/context.js';
 import { PostType } from '../types/post.js';
 import { UUIDType } from '../types/uuid.js';
 
@@ -13,13 +13,13 @@ export const postQueries = {
         type: new GraphQLNonNull(UUIDType),
       },
     },
-    resolve: (_source: string, { id }, context: FastifyInstance) => {
+    resolve: (_source: string, { id }, context: Context) => {
       return getPostById(id, context);
     },
   },
   posts: {
     type: new GraphQLList(PostType),
-    resolve: (_source: string, _args: unknown, context: FastifyInstance) => {
+    resolve: (_source: string, _args: unknown, context: Context) => {
       return getPosts(context);
     },
   },

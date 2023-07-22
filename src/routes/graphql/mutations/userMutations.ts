@@ -1,4 +1,3 @@
-import { FastifyInstance } from 'fastify';
 import { GraphQLBoolean, GraphQLNonNull } from 'graphql';
 
 import {
@@ -10,6 +9,7 @@ import {
 } from '../actions/userActions.js';
 import { UserChangeType, UserCreateType, UserType } from '../types/user.js';
 import { UUIDType } from '../types/uuid.js';
+import { Context } from '../types/context.js';
 
 export const userMutations = {
   createUser: {
@@ -19,7 +19,7 @@ export const userMutations = {
         type: UserCreateType,
       },
     },
-    resolve: (_source: unknown, { dto }, ctx: FastifyInstance) => {
+    resolve: (_source: unknown, { dto }, ctx: Context) => {
       return createUser(dto, ctx);
     },
   },
@@ -34,7 +34,7 @@ export const userMutations = {
         type: new GraphQLNonNull(UUIDType),
       },
     },
-    resolve: (_source: unknown, { id, dto }, ctx: FastifyInstance) => {
+    resolve: (_source: unknown, { id, dto }, ctx: Context) => {
       return updateUser(id, dto, ctx);
     },
   },
@@ -46,7 +46,7 @@ export const userMutations = {
         type: new GraphQLNonNull(UUIDType),
       },
     },
-    resolve: (_source: unknown, { id }, ctx: FastifyInstance) => {
+    resolve: (_source: unknown, { id }, ctx: Context) => {
       return deleteUser(id, ctx);
     },
   },
@@ -61,7 +61,7 @@ export const userMutations = {
         type: UUIDType,
       },
     },
-    resolve: (_source: unknown, { userId, authorId }, ctx: FastifyInstance) => {
+    resolve: (_source: unknown, { userId, authorId }, ctx: Context) => {
       return subscribeTo(userId, authorId, ctx);
     },
   },
@@ -76,7 +76,7 @@ export const userMutations = {
         type: UUIDType,
       },
     },
-    resolve: (_source: unknown, { userId, authorId }, ctx: FastifyInstance) => {
+    resolve: (_source: unknown, { userId, authorId }, ctx: Context) => {
       return unsubscribeFrom(userId, authorId, ctx);
     },
   },

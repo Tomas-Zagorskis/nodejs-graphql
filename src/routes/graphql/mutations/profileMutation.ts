@@ -1,4 +1,3 @@
-import { FastifyInstance } from 'fastify';
 import { GraphQLBoolean, GraphQLNonNull } from 'graphql';
 
 import {
@@ -6,6 +5,7 @@ import {
   deleteProfile,
   updateProfile,
 } from '../actions/profileActions.js';
+import { Context } from '../types/context.js';
 import { ProfileChangeType, ProfileCreateType, ProfileType } from '../types/profile.js';
 import { UUIDType } from '../types/uuid.js';
 
@@ -17,7 +17,7 @@ export const profileMutations = {
         type: ProfileCreateType,
       },
     },
-    resolve: (_source: unknown, { dto }, ctx: FastifyInstance) => {
+    resolve: (_source: unknown, { dto }, ctx: Context) => {
       return createProfile(dto, ctx);
     },
   },
@@ -32,7 +32,7 @@ export const profileMutations = {
         type: new GraphQLNonNull(UUIDType),
       },
     },
-    resolve: (_source: unknown, { id, dto }, ctx: FastifyInstance) => {
+    resolve: (_source: unknown, { id, dto }, ctx: Context) => {
       return updateProfile(id, dto, ctx);
     },
   },
@@ -44,7 +44,7 @@ export const profileMutations = {
         type: new GraphQLNonNull(UUIDType),
       },
     },
-    resolve: (_source: unknown, { id }, ctx: FastifyInstance) => {
+    resolve: (_source: unknown, { id }, ctx: Context) => {
       return deleteProfile(id, ctx);
     },
   },
