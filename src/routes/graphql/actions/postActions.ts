@@ -5,8 +5,8 @@ const getPosts = async ({ prisma }: Context) => {
   return await prisma.post.findMany();
 };
 
-const getPostsByAuthorId = async (id: string, { prisma }: Context) => {
-  return await prisma.post.findMany({ where: { authorId: id } });
+const getPostsByAuthorId = async (id: string, { loader }: Context) => {
+  return await loader.post.load(id);
 };
 
 const getPostById = async (id: string, { prisma }: Context) => {
