@@ -8,4 +8,8 @@ const getMemberTypeById = async (id: string, { prisma }: Context) => {
   return await prisma.memberType.findFirst({ where: { id } });
 };
 
-export { getMemberTypes, getMemberTypeById };
+const getMemberTypeByMemberId = async (id: string, { loader }: Context) => {
+  return await loader.member.load(id);
+};
+
+export { getMemberTypes, getMemberTypeById, getMemberTypeByMemberId };

@@ -9,20 +9,12 @@ const getUserById = async (id: string, { prisma }: Context) => {
   return await prisma.user.findUnique({ where: { id } });
 };
 
-const getSubscribersOfUser = async (id: string, { prisma }: Context) => {
-  const subs = await prisma.subscribersOnAuthors.findMany({
-    where: { subscriberId: id },
-    select: { author: true },
-  });
-  return subs.map((sub) => sub.author);
+const getSubscribersOfUser = async (id: string, { loader }: Context) => {
+  return loader.userSubscribedTo.load(id);
 };
 
-const getSubscriptionsOfUser = async (id: string, { prisma }: Context) => {
-  const subs = await prisma.subscribersOnAuthors.findMany({
-    where: { authorId: id },
-    select: { subscriber: true },
-  });
-  return subs.map((sub) => sub.subscriber);
+const getSubscriptionsOfUser = async (id: string, { loader }: Context) => {
+  return loader.subscribedToUser.load(id);
 };
 
 const createUser = async (user: UserDTO, { prisma }: Context) => {

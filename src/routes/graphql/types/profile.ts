@@ -6,13 +6,13 @@ import {
   GraphQLObjectType,
 } from 'graphql';
 
-import { getMemberTypeById } from '../actions/memberTypeActions.js';
+import { getMemberTypeByMemberId } from '../actions/memberTypeActions.js';
 import { getUserById } from '../actions/userActions.js';
+import { Context } from '../types/context.js';
 import { MemberType } from './memberType.js';
 import { MemberTypeId } from './memberTypeId.js';
 import { UserType } from './user.js';
 import { UUIDType } from './uuid.js';
-import { Context } from '../types/context.js';
 
 const profileDTO = {
   isMale: {
@@ -42,7 +42,7 @@ export const ProfileType = new GraphQLObjectType({
     memberType: {
       type: MemberType,
       resolve: ({ memberTypeId }, _args: unknown, context: Context) => {
-        return getMemberTypeById(memberTypeId, context);
+        return getMemberTypeByMemberId(memberTypeId, context);
       },
     },
     memberTypeId: {

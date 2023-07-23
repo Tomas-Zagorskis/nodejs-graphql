@@ -9,12 +9,12 @@ const getProfileById = async (id: string, { prisma }: Context) => {
   return await prisma.profile.findFirst({ where: { id } });
 };
 
-const getProfileByUserId = async (id: string, { prisma }: Context) => {
-  return await prisma.profile.findFirst({ where: { userId: id } });
+const getProfileByUserId = async (id: string, { loader }: Context) => {
+  return await loader.profile.load(id);
 };
 
-const getProfilesByMemberTypeId = async (id: string, { loader }: Context) => {
-  return await loader.profile.load(id);
+const getProfilesByMemberTypeId = async (id: string, { prisma }: Context) => {
+  return await prisma.profile.findMany({ where: { memberTypeId: id } });
 };
 
 const createProfile = async (profile: ProfileDTO, { prisma }: Context) => {

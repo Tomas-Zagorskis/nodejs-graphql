@@ -81,6 +81,17 @@ export type User = {
   id: string;
   name: string;
   balance: number;
+  userSubscribedTo?: {
+    subscriberId: string;
+    authorId: string;
+  }[];
+  subscribedToUser?: {
+    subscriberId: string;
+    authorId: string;
+  }[];
 };
 
-export type UserDTO = Omit<User, 'id'>;
+export type UserDTO = {
+  name: string;
+  balance: number;
+};

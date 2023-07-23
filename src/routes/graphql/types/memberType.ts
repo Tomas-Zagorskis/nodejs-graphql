@@ -27,12 +27,7 @@ export const MemberType = new GraphQLObjectType({
 });
 
 export type MemberType = {
-  id: MemberTypeIdEnum;
+  id: string;
   discount: number;
   postsLimitPerMonth: number;
 };
-
-enum MemberTypeIdEnum {
-  basic = 'basic',
-  business = 'business',
-}
