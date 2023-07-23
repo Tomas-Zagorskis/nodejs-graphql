@@ -1,4 +1,4 @@
-import { GraphQLList, GraphQLNonNull } from 'graphql';
+import { GraphQLList, GraphQLNonNull, GraphQLResolveInfo } from 'graphql';
 
 import { getUserById, getUsers } from '../actions/userActions.js';
 import { Context } from '../types/context.js';
@@ -13,14 +13,19 @@ export const userQueries = {
         type: new GraphQLNonNull(UUIDType),
       },
     },
-    resolve: (_source: string, { id }, context: Context) => {
+    resolve: (_source: unknown, { id }, context: Context) => {
       return getUserById(id, context);
     },
   },
   users: {
     type: new GraphQLList(UserType),
-    resolve: (_source: string, _args: unknown, context: Context) => {
-      return getUsers(context);
+    resolve: (
+      _source: unknown,
+      _args: unknown,
+      context: Context,
+      info: GraphQLResolveInfo,
+    ) => {
+      return getUsers(context, info);
     },
   },
 };

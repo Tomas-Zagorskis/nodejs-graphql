@@ -45,14 +45,14 @@ export const UserType = new GraphQLObjectType({
     },
     userSubscribedTo: {
       type: new GraphQLList(UserType),
-      resolve: ({ id }, _args: unknown, context: Context) => {
-        return getSubscribersOfUser(id, context);
+      resolve: (user: User, _args: unknown, context: Context) => {
+        return getSubscribersOfUser(user, context);
       },
     },
     subscribedToUser: {
       type: new GraphQLList(UserType),
-      resolve: ({ id }, _args: unknown, context: Context) => {
-        return getSubscriptionsOfUser(id, context);
+      resolve: (user: User, _args: unknown, context: Context) => {
+        return getSubscriptionsOfUser(user, context);
       },
     },
   }),

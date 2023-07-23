@@ -7,9 +7,9 @@ import {
   unsubscribeFrom,
   updateUser,
 } from '../actions/userActions.js';
+import { Context } from '../types/context.js';
 import { UserChangeType, UserCreateType, UserType } from '../types/user.js';
 import { UUIDType } from '../types/uuid.js';
-import { Context } from '../types/context.js';
 
 export const userMutations = {
   createUser: {

@@ -13,13 +13,13 @@ export const postQueries = {
         type: new GraphQLNonNull(UUIDType),
       },
     },
-    resolve: (_source: string, { id }, context: Context) => {
+    resolve: (_source: unknown, { id }, context: Context) => {
       return getPostById(id, context);
     },
   },
   posts: {
     type: new GraphQLList(PostType),
-    resolve: (_source: string, _args: unknown, context: Context) => {
+    resolve: (_source: unknown, _args: unknown, context: Context) => {
       return getPosts(context);
     },
   },

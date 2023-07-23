@@ -13,13 +13,13 @@ export const memberTypeQueries = {
         type: new GraphQLNonNull(MemberTypeId),
       },
     },
-    resolve: (_source: string, { id }, context: Context) => {
+    resolve: (_source: unknown, { id }, context: Context) => {
       return getMemberTypeById(id, context);
     },
   },
   memberTypes: {
     type: new GraphQLList(MemberType),
-    resolve: (_source: string, _args: unknown, context: Context) => {
+    resolve: (_source: unknown, _args: unknown, context: Context) => {
       return getMemberTypes(context);
     },
   },
